@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:weatherapp/apiFiles/showData.dart';
+import 'package:weatherapp/pages/userLocation.dart';
 import '../Modules/constants.dart';
 import '../widgets/allWidgets.dart';
-import 'package:geolocator/geolocator.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
@@ -21,21 +21,18 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
     super.initState();
- 
 
-    getLocation();
+    userLocation();
+  }
+// this function calls and runs to get the current location of the dfevice   
+  void userLocation() async {
+    UserLocation currentLocation = UserLocation();
+    await currentLocation.getLocation();
+    print(currentLocation.latitude);
+    print(currentLocation.longitude);
   }
 
   @override
-  void getLocation() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-
-    Position userPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
-
-    print(userPosition);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +43,6 @@ class _WelcomePageState extends State<WelcomePage> {
           Container(
             margin: EdgeInsets.only(top: 10, left: 15),
             child: Row(
-           
               children: [
                 SizedBox(
                   height: 60,
