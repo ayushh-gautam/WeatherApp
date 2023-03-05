@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, override_on_non_overriding_member, avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
-
+import 'package:weatherapp/apiFiles/showData.dart';
 import '../Modules/constants.dart';
 import '../widgets/allWidgets.dart';
+import 'package:geolocator/geolocator.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
@@ -14,7 +15,27 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
+Weather myWeather = Weather();
+
 class _WelcomePageState extends State<WelcomePage> {
+  @override
+  void initState() {
+    super.initState();
+ 
+
+    getLocation();
+  }
+
+  @override
+  void getLocation() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+
+    Position userPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
+
+    print(userPosition);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +46,7 @@ class _WelcomePageState extends State<WelcomePage> {
           Container(
             margin: EdgeInsets.only(top: 10, left: 15),
             child: Row(
-              // ignore: prefer_const_literals_to_create_immutables
+           
               children: [
                 SizedBox(
                   height: 60,
@@ -75,7 +96,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           height: 20,
                         ),
                         Text(
-                          '30 °C',
+                          '${myWeather.temperature.toString()}°C',
                           style: TextStyle(color: Colors.white, fontSize: 50),
                         )
                       ],
@@ -105,7 +126,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
                 // Location
                 Text(
-                  'Biratnagar, Nepal 56613',
+                  myWeather.city.toString(),
                   style: TextStyle(color: Colors.white, fontSize: 19),
                 )
               ],
