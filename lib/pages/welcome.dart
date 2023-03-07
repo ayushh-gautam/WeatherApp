@@ -1,10 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, override_on_non_overriding_member, avoid_print, unused_local_variable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, override_on_non_overriding_member, avoid_print, unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:weatherapp/apiFiles/showData.dart';
+import 'package:weatherapp/apiFiles/apiResponseData.dart';
 import 'package:weatherapp/pages/userLocation.dart';
 import '../Modules/constants.dart';
 import '../widgets/allWidgets.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+const apiKey = '4c4b664fe4018cf1d877668bd30c7fef';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
@@ -18,18 +22,48 @@ class WelcomePage extends StatefulWidget {
 Weather myWeather = Weather();
 
 class _WelcomePageState extends State<WelcomePage> {
+  var latitude;
+  var longitude;
   @override
   void initState() {
     super.initState();
 
     userLocation();
   }
-// this function calls and runs to get the current location of the dfevice   
+
+// this function calls and runs to get the current location of the dfevice
   void userLocation() async {
     UserLocation currentLocation = UserLocation();
     await currentLocation.getLocation();
-    print(currentLocation.latitude);
-    print(currentLocation.longitude);
+    latitude = currentLocation.latitude;
+    longitude = currentLocation.longitude;
+    getApiData();
+  }
+
+  void getApiData() async {
+    http.Response apiResponse = await http.get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&&appid=$apiKey'));
+
+    if (apiResponse.statusCode == 200) {
+      String data = apiResponse.body;
+      var decodedData = jsonDecode(data);
+
+      var latitude = decodedData['coord']['lat'];
+
+      var description = decodedData['weather'][0]['description'];
+
+      var cityName = decodedData['name'];
+
+      var country = decodedData['sys']['country'];
+
+      print(latitude);
+
+      print(description);
+
+      print(cityName + country);
+    } else {
+      print(apiResponse.statusCode);
+    }
   }
 
   @override
