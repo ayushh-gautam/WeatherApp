@@ -8,7 +8,7 @@ import '../widgets/allWidgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const apiKey = '4c4b664fe4018cf1d877668bd30c7fef';
+final apiKey = '4c4b664fe4018cf1d877668bd30c7fef';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
@@ -33,6 +33,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
 // this function calls and runs to get the current location of the dfevice
   void userLocation() async {
+
     UserLocation currentLocation = UserLocation();
     await currentLocation.getLocation();
     latitude = currentLocation.latitude;

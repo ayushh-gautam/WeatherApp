@@ -66,7 +66,7 @@ class Weather {
 
 //   Future<WeatherData> fetchWeatherData() async {
 //     final response = await http.get(Uri.parse(
-//         'https://api.openweathermap.org/data/2.5/weather?q=biratnagar&appid=4c4b664fe4018cf1d877668bd30c7fef'));
+//         ''));
 //     if (response.statusCode == 200) {
 //       return WeatherData.fromJson(jsonDecode(response.body));
 //     } else {
