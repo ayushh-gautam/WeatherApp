@@ -1,20 +1,23 @@
 // // ignore_for_file: file_names
 
-class Weather {
+class WeatherData {
   final double? temperature;
   final String? city;
   final String? country;
 
-  Weather({this.temperature, this.city, this.country});
+  WeatherData({this.temperature, this.city, this.country});
 
-  factory Weather.fromJson(Map<String, dynamic> json) {
-    return Weather(
+  factory WeatherData.fromJson(Map<String, dynamic> json) {
+    return WeatherData(
       temperature: json['main']['temp'].toDouble(),
       city: json['name'],
       country: json['sys']['country'],
     );
   }
 }
+
+
+
 
 // import 'dart:convert';
 // import 'package:flutter/material.dart';

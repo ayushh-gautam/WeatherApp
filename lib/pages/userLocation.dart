@@ -8,15 +8,18 @@ class UserLocation {
   double? longitude;
   UserLocation({this.latitude, this.longitude});
 
-  Future<void> getLocation() async {
+  Future getLocation() async {
     try {
-      LocationPermission permission = await Geolocator.requestPermission();
+      LocationPermission permission;
+      permission = await Geolocator.requestPermission();
+      permission = await Geolocator.checkPermission();
 
       Position userPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.low);
 
       latitude = userPosition.latitude;
       longitude = userPosition.longitude;
+      return await Geolocator.getCurrentPosition();
     } catch (exception) {
       print(exception);
     }

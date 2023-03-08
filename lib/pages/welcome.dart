@@ -2,13 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:weatherapp/apiFiles/apiResponseData.dart';
+import 'package:weatherapp/apiFiles/weatherApiClient.dart';
 import 'package:weatherapp/pages/userLocation.dart';
 import '../Modules/constants.dart';
 import '../widgets/allWidgets.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-final apiKey = '4c4b664fe4018cf1d877668bd30c7fef';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
@@ -19,11 +16,13 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-Weather myWeather = Weather();
+// WeatherData myWeather = WeatherData();
 
 class _WelcomePageState extends State<WelcomePage> {
   var latitude;
   var longitude;
+  WeatherClient client = WeatherClient();
+  WeatherData? data;
   @override
   void initState() {
     super.initState();
@@ -33,38 +32,11 @@ class _WelcomePageState extends State<WelcomePage> {
 
 // this function calls and runs to get the current location of the dfevice
   void userLocation() async {
-
     UserLocation currentLocation = UserLocation();
     await currentLocation.getLocation();
     latitude = currentLocation.latitude;
     longitude = currentLocation.longitude;
-    getApiData();
-  }
-
-  void getApiData() async {
-    http.Response apiResponse = await http.get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&&appid=$apiKey'));
-
-    if (apiResponse.statusCode == 200) {
-      String data = apiResponse.body;
-      var decodedData = jsonDecode(data);
-
-      var latitude = decodedData['coord']['lat'];
-
-      var description = decodedData['weather'][0]['description'];
-
-      var cityName = decodedData['name'];
-
-      var country = decodedData['sys']['country'];
-
-      print(latitude);
-
-      print(description);
-
-      print(cityName + country);
-    } else {
-      print(apiResponse.statusCode);
-    }
+    data = await client.getApiData(latitude, longitude);
   }
 
   @override
@@ -127,7 +99,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           height: 20,
                         ),
                         Text(
-                          '${myWeather.temperature.toString()}°C',
+                          '${data?.temperature}°C',
                           style: TextStyle(color: Colors.white, fontSize: 50),
                         )
                       ],
@@ -157,7 +129,9 @@ class _WelcomePageState extends State<WelcomePage> {
 
                 // Location
                 Text(
-                  myWeather.city.toString(),
+                  '${data?.city}'
+                  // myWeather.city.toString(),,
+                  ,
                   style: TextStyle(color: Colors.white, fontSize: 19),
                 )
               ],

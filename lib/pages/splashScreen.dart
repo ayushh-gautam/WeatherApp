@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:weatherapp/Modules/constants.dart';
-import 'package:weatherapp/pages/getStarted.dart';
+
+import 'package:weatherapp/pages/welcome.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 4), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => GetStarted()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => WelcomePage()));
     });
   }
 
