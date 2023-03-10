@@ -4,14 +4,24 @@ class WeatherData {
   final double? temperature;
   final String? city;
   final String? country;
+  int? sunrise;
+  int? sunset;
 
-  WeatherData({this.temperature, this.city, this.country});
+  WeatherData({
+    this.temperature,
+    this.city,
+    this.country,
+    this.sunrise,
+    this.sunset,
+  });
 
   factory WeatherData.fromJson(Map<String, dynamic> json) {
     return WeatherData(
       temperature: json['main']['temp'].toDouble(),
       city: json['name'],
       country: json['sys']['country'],
+      sunrise: json['sys']['sunrise'],
+      sunset: json['sys']['sunset'],
     );
   }
 }

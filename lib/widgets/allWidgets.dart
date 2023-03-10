@@ -50,8 +50,8 @@ class dayText extends StatelessWidget {
 // Weather box
 
 class Forecast extends StatelessWidget {
-String? kTime;
-String? kTemperature;
+  String? kTime;
+  String? kTemperature;
   Forecast({@required this.kTime, @required this.kTemperature});
 
   @override
@@ -93,4 +93,12 @@ String? kTemperature;
       ),
     );
   }
+}
+
+Widget textWidget({final name, var fontweight, var fontsize}) {
+  return Text(
+    name.toString(),
+    style: TextStyle(
+        fontSize: fontsize, fontWeight: fontweight, color: Colors.white),
+  );
 }
