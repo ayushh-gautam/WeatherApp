@@ -70,6 +70,48 @@ class _WelcomePageState extends State<WelcomePage> {
                 ],
               ),
             ),
+
+            // Location
+            Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 15,
+                bottom: 15,
+              ),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: FutureBuilder<WeatherData?>(
+                future: _futureData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(
+                      color: Colors.white,
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Error: ${snapshot.error}',
+                      style: TextStyle(color: Colors.white),
+                    );
+                  } else if (snapshot.hasData) {
+                    return Text(
+                      '${snapshot.data?.city}',
+                      style: TextStyle(color: Colors.white, fontSize: 19),
+                    );
+                  } else {
+                    return Text(
+                      'No Data',
+                      style: TextStyle(color: Colors.white),
+                    );
+                  }
+                },
+              ),
+            ),
             // Card
             Container(
               margin: EdgeInsets.only(top: 30, left: 20, right: 20),
@@ -148,34 +190,6 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   SizedBox(
                     height: 20,
-                  ),
-
-                  // Location
-
-                  FutureBuilder<WeatherData?>(
-                    future: _futureData,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator(
-                          color: Colors.white,
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text(
-                          'Error: ${snapshot.error}',
-                          style: TextStyle(color: Colors.white),
-                        );
-                      } else if (snapshot.hasData) {
-                        return Text(
-                          '${snapshot.data?.city}',
-                          style: TextStyle(color: Colors.white, fontSize: 19),
-                        );
-                      } else {
-                        return Text(
-                          'No Data',
-                          style: TextStyle(color: Colors.white),
-                        );
-                      }
-                    },
                   ),
                 ],
               ),
