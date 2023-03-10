@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, override_on_non_overriding_member, avoid_print, unused_local_variable, prefer_typing_uninitialized_variables
+// // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, override_on_non_overriding_member, avoid_print, unused_local_variable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:weatherapp/apiFiles/apiResponseData.dart';
@@ -16,30 +16,27 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-// WeatherData myWeather = WeatherData();
-
 class _WelcomePageState extends State<WelcomePage> {
   var latitude;
   var longitude;
   WeatherClient client = WeatherClient();
-  WeatherData? data;
+
+  Future<WeatherData?>? _futureData;
+
   @override
   void initState() {
     super.initState();
-
-    userLocation();
+    _futureData = _getCurrentWeatherData();
   }
 
-// this function calls and runs to get the current location of the dfevice
-  void userLocation() async {
+  Future<WeatherData?> _getCurrentWeatherData() async {
     UserLocation currentLocation = UserLocation();
     await currentLocation.getLocation();
     latitude = currentLocation.latitude;
     longitude = currentLocation.longitude;
-    data = await client.getApiData(latitude, longitude);
+    return await client.getApiData(latitude, longitude);
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,10 +64,8 @@ class _WelcomePageState extends State<WelcomePage> {
                 )
               ],
             ),
-          )
-
-          //Card
-          ,
+          ),
+          // Card
           Container(
             margin: EdgeInsets.only(top: 30, left: 20, right: 20),
             padding: EdgeInsets.all(18),
@@ -98,10 +93,33 @@ class _WelcomePageState extends State<WelcomePage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          '${data?.temperature}°C',
-                          style: TextStyle(color: Colors.white, fontSize: 50),
-                        )
+                        FutureBuilder<WeatherData?>(
+                          future: _futureData,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator(
+                                color: Colors.white,
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                'Error: ${snapshot.error}',
+                                style: TextStyle(color: Colors.white),
+                              );
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                '${snapshot.data?.temperature}°C',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 50),
+                              );
+                            } else {
+                              return Text(
+                                'No Data',
+                                style: TextStyle(color: Colors.white),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                     Column(
@@ -128,12 +146,39 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
 
                 // Location
-                Text(
-                  '${data?.city}'
-                  // myWeather.city.toString(),,
-                  ,
-                  style: TextStyle(color: Colors.white, fontSize: 19),
-                )
+
+                FutureBuilder<WeatherData?>(
+                  future: _futureData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        color: Colors.white,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Error: ${snapshot.error}',
+                        style: TextStyle(color: Colors.white),
+                      );
+                    } else if (snapshot.hasData) {
+                      return Text(
+                        '${snapshot.data?.city}',
+                        style: TextStyle(color: Colors.white, fontSize: 19),
+                      );
+                    } else {
+                      return Text(
+                        'No Data',
+                        style: TextStyle(color: Colors.white),
+                      );
+                    }
+                  },
+                ),
+
+                // Text(
+                //   '${data?.city}'
+                //   // myWeather.city.toString(),,
+                //   ,
+                //   style: TextStyle(color: Colors.white, fontSize: 19),
+                // ),
               ],
             ),
           ),

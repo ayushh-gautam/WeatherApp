@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:weatherapp/Modules/constants.dart';
 
-import 'package:weatherapp/pages/welcome.dart';
+import 'package:weatherapp/pages/Welcome.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
