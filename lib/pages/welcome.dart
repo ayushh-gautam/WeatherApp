@@ -52,7 +52,7 @@ class _WelcomePageState extends State<WelcomePage> {
             Container(
               margin: EdgeInsets.only(top: 10, left: 15),
               child: Row(
-                children: [
+                children: const [
                   SizedBox(
                     height: 60,
                   ),
@@ -75,12 +75,11 @@ class _WelcomePageState extends State<WelcomePage> {
             Container(
               alignment: Alignment.center,
               width: double.infinity,
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(20),
               margin: EdgeInsets.only(
                 left: 20,
                 right: 20,
                 top: 15,
-                bottom: 15,
               ),
               decoration: BoxDecoration(
                 color: kPrimaryColor,
@@ -219,17 +218,71 @@ class _WelcomePageState extends State<WelcomePage> {
                   width: 40,
                 ),
                 SunSet(futureData: _futureData),
-
                 SizedBox(
                   height: 25,
                 ),
-                //Weather Forecast
-
-                //Chart
-
-                // ignore: prefer_const_constructors
               ]),
             ),
+
+            // Humidity WindSpeed and many more.
+
+            Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 50,
+                bottom: 15,
+              ),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Text(
+                        'Humidity',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      FutureBuilder<WeatherData?>(
+                        future: _futureData,
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting)
+                            return CircularProgressIndicator();
+                          else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else if (snapshot.hasData) {
+                            return Text(
+                              '${snapshot.data?.humidity}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
+                            );
+                          } else {
+                            return Text('No data');
+                          }
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
           ]),
         ));
   }
