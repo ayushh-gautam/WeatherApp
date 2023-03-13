@@ -53,13 +53,20 @@ class _WelcomePageState extends State<WelcomePage> {
               Container(
                 margin: EdgeInsets.only(top: 10, left: 15),
                 child: Row(
-                  children: const [
+                  children: [
                     SizedBox(
                       height: 60,
                     ),
-                    Icon(
-                      Icons.menu,
-                      color: Colors.white,
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _futureData = _getCurrentWeatherData();
+                        });
+                      },
+                      child: Icon(
+                        Icons.my_location,
+                        color: Colors.white,
+                      ),
                     ),
                     SizedBox(
                       width: 80,
@@ -270,10 +277,8 @@ class _WelcomePageState extends State<WelcomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
-
-
                           //HUMIDITY
-                          
+
                           Text('Humidity',
                               style: TextStyle(
                                   color: Colors.white,
@@ -357,10 +362,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       ),
                     ),
 
-                                        //Feels Like
-
-
-
+                    //Feels Like
 
                     Container(
                       margin: EdgeInsets.all(13),
