@@ -7,6 +7,9 @@ class WeatherData {
   int? sunrise;
   int? sunset;
   final double? humidity;
+  final double? speed;
+  final double? feels;
+  final double? pressure;
 
   WeatherData({
     this.temperature,
@@ -15,6 +18,9 @@ class WeatherData {
     this.sunrise,
     this.sunset,
     this.humidity,
+    this.speed,
+    this.feels,
+    this.pressure,
   });
 
   factory WeatherData.fromJson(Map<String, dynamic> json) {
@@ -25,6 +31,9 @@ class WeatherData {
       sunrise: json['sys']['sunrise'],
       sunset: json['sys']['sunset'],
       humidity: json['main']['humidity'].toDouble(),
+      speed: json['wind']['speed'].toDouble(),
+      feels: json['main']['feels_like'].toDouble(),
+      pressure: json['main']['pressure'].toDouble(),
     );
   }
 }

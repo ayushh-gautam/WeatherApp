@@ -8,8 +8,6 @@ import 'package:weatherapp/apiFiles/weatherApiClient.dart';
 import 'package:weatherapp/pages/userLocation.dart';
 import 'package:weatherapp/widgets/sunrise&set.dart';
 import '../Modules/constants.dart';
-import '../widgets/allWidgets.dart';
-import 'package:intl/intl.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({
@@ -44,246 +42,402 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kWelcomePage,
-        body: SafeArea(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // App Bar
-            Container(
-              margin: EdgeInsets.only(top: 10, left: 15),
-              child: Row(
-                children: const [
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 80,
-                  ),
-                  Text(
-                    'Weather Forecast',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  )
-                ],
-              ),
-            ),
-
-            // Location
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 15,
-              ),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: FutureBuilder<WeatherData?>(
-                future: _futureData,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(
+      backgroundColor: kWelcomePage,
+      body: ListView(
+        scrollDirection: Axis.vertical,
+        children: [
+          SafeArea(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              // App Bar
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 15),
+                child: Row(
+                  children: const [
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Icon(
+                      Icons.menu,
                       color: Colors.white,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      'Error: ${snapshot.error}',
-                      style: TextStyle(color: Colors.white),
-                    );
-                  } else if (snapshot.hasData) {
-                    return Text(
-                      '${snapshot.data?.city}',
-                      style: TextStyle(color: Colors.white, fontSize: 19),
-                    );
-                  } else {
-                    return Text(
-                      'No Data',
-                      style: TextStyle(color: Colors.white),
-                    );
-                  }
-                },
+                    ),
+                    SizedBox(
+                      width: 80,
+                    ),
+                    Text(
+                      'Weather Forecast',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )
+                  ],
+                ),
               ),
-            ),
-            // Card
-            Container(
-              margin: EdgeInsets.only(top: 30, left: 20, right: 20),
-              padding: EdgeInsets.all(18),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: Color(0xFF1B1D49),
+
+              // FutureBuilder(
+              //   future: _futureData,
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return CircularProgressIndicator();
+              //     } else if (snapshot.hasError) {
+              //       return Text(
+              //         'Error: ${snapshot.error}',
+              //         style: TextStyle(color: Colors.white),
+              //       );
+              //     }
+              //     else if (snapshot.hasData)
+
+              //     return   Text('${snapshot.data?.city}') ;
+              //   },
+
+              // ),
+
+              // Location
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 15,
+                ),
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: FutureBuilder<WeatherData?>(
+                  future: _futureData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        color: Colors.white,
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Error: ${snapshot.error}',
+                        style: TextStyle(color: Colors.white),
+                      );
+                    } else if (snapshot.hasData) {
+                      return Text(
+                        '${snapshot.data?.city}',
+                        style: TextStyle(color: Colors.white, fontSize: 19),
+                      );
+                    } else {
+                      return Text(
+                        'No Data',
+                        style: TextStyle(color: Colors.white),
+                      );
+                    }
+                  },
+                ),
               ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Today',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
+              // Card
+              Container(
+                margin: EdgeInsets.only(top: 30, left: 20, right: 20),
+                padding: EdgeInsets.all(18),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: Color(0xFF1B1D49),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Today',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            FutureBuilder<WeatherData?>(
+                              future: _futureData,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator(
+                                    color: Colors.white,
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                    'Error: ${snapshot.error}',
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                } else if (snapshot.hasData) {
+                                  return Text(
+                                    '${snapshot.data?.temperature}°C',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 50),
+                                  );
+                                } else {
+                                  return Text(
+                                    'No Data',
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Text(
+                              '---------',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Icon(
+                              Icons.sunny,
+                              color: Colors.yellow,
+                              size: 60,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 28,
+              ),
+
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 15,
+                  bottom: 15,
+                ),
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  SunRiseSet(futureData: _futureData),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  SunSet(futureData: _futureData),
+                  SizedBox(
+                    height: 25,
+                  ),
+                ]),
+              ),
+
+              // Humidity WindSpeed and many more.
+
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                padding: EdgeInsets.all(15),
+                margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 50,
+                  bottom: 15,
+                ),
+                decoration: BoxDecoration(
+                  color: kPrimaryColor,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(13),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          Text('Humidity',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700)),
+                          SizedBox(height: 12),
+                          Icon(Icons.water_drop, color: Colors.white, size: 30),
                           SizedBox(
                             height: 20,
                           ),
                           FutureBuilder<WeatherData?>(
                             future: _futureData,
-                            builder: (context, snapshot) {
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator(
-                                  color: Colors.white,
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text(
-                                  'Error: ${snapshot.error}',
-                                  style: TextStyle(color: Colors.white),
-                                );
+                                  ConnectionState.waiting)
+                                return CircularProgressIndicator();
+                              else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
                               } else if (snapshot.hasData) {
                                 return Text(
-                                  '${snapshot.data?.temperature}°C',
+                                  '${snapshot.data?.humidity}%',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 50),
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700),
                                 );
                               } else {
-                                return Text(
-                                  'No Data',
-                                  style: TextStyle(color: Colors.white),
-                                );
+                                return Text('No data');
                               }
                             },
                           ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+
+                          SizedBox(
+                            height: 30,
+                          ),
+
                           Text(
-                            'Sat, 3 Aug',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            'Wind Speed',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Icon(
-                            Icons.sunny,
-                            color: Colors.yellow,
-                            size: 60,
+                            Icons.waves,
+                            color: Colors.white,
                           ),
+
+                          SizedBox(
+                            height: 10,
+                          ),
+                          FutureBuilder<WeatherData?>(
+                            future: _futureData,
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return CircularProgressIndicator();
+                              else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.hasData) {
+                                return Text(
+                                  '${snapshot.data?.speed}m/s',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700),
+                                );
+                              } else {
+                                return Text('No data');
+                              }
+                            },
+                          )
+
+                          //Wind Speed
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 28,
-            ),
-
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              padding: EdgeInsets.all(15),
-              margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 15,
-                bottom: 15,
-              ),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                SunRiseSet(futureData: _futureData),
-                SizedBox(
-                  width: 40,
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(13),
+                      child: Column(children: [
+                        Text('Feels Like',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
+                        SizedBox(height: 12),
+                        Icon(Icons.thermostat, color: Colors.white, size: 30),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FutureBuilder<WeatherData?>(
+                          future: _futureData,
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              return CircularProgressIndicator();
+                            else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                '${snapshot.data?.feels}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700),
+                              );
+                            } else {
+                              return Text('No data');
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          'Pressure',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Icon(
+                          Icons.compress,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FutureBuilder<WeatherData?>(
+                          future: _futureData,
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              return CircularProgressIndicator();
+                            else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return Text(
+                                '${snapshot.data?.pressure}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700),
+                              );
+                            } else {
+                              return Text('No data');
+                            }
+                          },
+                        )
+                      ]),
+                    )
+                  ],
                 ),
-                SunSet(futureData: _futureData),
-                SizedBox(
-                  height: 25,
-                ),
-              ]),
-            ),
-
-            // Humidity WindSpeed and many more.
-
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              padding: EdgeInsets.all(15),
-              margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 50,
-                bottom: 15,
-              ),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Text(
-                        'Humidity',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      FutureBuilder<WeatherData?>(
-                        future: _futureData,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting)
-                            return CircularProgressIndicator();
-                          else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else if (snapshot.hasData) {
-                            return Text(
-                              '${snapshot.data?.humidity}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700),
-                            );
-                          } else {
-                            return Text('No data');
-                          }
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ]),
-        ));
+              )
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 }
