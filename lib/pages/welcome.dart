@@ -270,6 +270,10 @@ class _WelcomePageState extends State<WelcomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
+
+
+                          //HUMIDITY
+                          
                           Text('Humidity',
                               style: TextStyle(
                                   color: Colors.white,
@@ -306,7 +310,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           SizedBox(
                             height: 30,
                           ),
-
+//Wind Speed
                           Text(
                             'Wind Speed',
                             style: TextStyle(
@@ -318,7 +322,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             height: 10,
                           ),
                           Icon(
-                            Icons.waves,
+                            Icons.air,
                             color: Colors.white,
                           ),
 
@@ -352,6 +356,12 @@ class _WelcomePageState extends State<WelcomePage> {
                         ],
                       ),
                     ),
+
+                                        //Feels Like
+
+
+
+
                     Container(
                       margin: EdgeInsets.all(13),
                       child: Column(children: [
@@ -376,7 +386,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
                               return Text(
-                                '${snapshot.data?.feels}',
+                                '${snapshot.data?.feels} °C',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 24,
